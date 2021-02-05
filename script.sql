@@ -15,7 +15,7 @@ create table contact (
 
 
 );
--- insert into contact values
--- (1, ),
--- (2)
--- ;
+insert into contact values
+(1, 'Daniel', 'Mond', 'mondaydaniel2002@yahoo.com', '56 626 726 72', '', 'Kursk', 'Kusk city', 'Russia', 1)
+
+;
