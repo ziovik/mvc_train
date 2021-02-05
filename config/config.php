@@ -7,6 +7,11 @@
  */
   define('DEBUG', true);
 
+  define ('DB_NAME', 'mvc_train');  //database name
+  define ('DB_USER', 'root');  //database user
+  define ('DB_PASSWORD', 'root');  //database password
+  define ('DB_HOST', '127.0.0.1');  //database host
+
   define('DEFAULT_CONTROLLER', 'Home'); //default controller will be Home if no one is there in url
 
   define('DEFAULT_LAYOUT', 'default'); //if no layout is set in controller then use this layout

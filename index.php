@@ -23,6 +23,9 @@
 
     //echo $_SERVER['PATH_INFO']; die();  //give everything after root mvc_train   which is /user/home etc
     $url = isset($_SERVER['PATH_INFO'])? explode('/', ltrim($_SERVER['PATH_INFO'], '/')) : [];
+
+//    $db = DB::getInstance();
+//    dnd($db);
     //Route the request
     Router::route($url);
     //  var_dump($url);  // shows the array of the path
