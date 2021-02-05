@@ -1,0 +1,18 @@
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+RewriteCond $1 !^(config|core|css|fonts|js|robots/.txt)
+
+RewriteRule ^(.+)$ index.php/$1 [L]
+
+
+#RewriteEngine On   #meaning to On rewrite engine
+#
+#RewriteCond %{REQUEST_FILENAME} !-d    #meaning it is not a directory
+#RewriteCond %{REQUEST_FILENAME} !-f     #meaning it is not a file
+#
+#RewriteCond $1 !^(config|core|css|fonts|js|robots/.txt)   #meaning it will skip these folder.
+#
+#RewriteRule ^(.+)$ index.php/$1 [L]   # ^(.+)$ meaning anything should be routed to index.php/with paramers($1)
