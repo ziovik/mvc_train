@@ -56,7 +56,7 @@ class DB
        $valueString = rtrim($valueString,',');  // trim the last , from right
        $sql = "INSERT INTO {$table} ({$fieldString}) VALUES ({$valueString})";
 
-       if(!$this->query($sql, $values)->error()){
+       if(!$this->query($sql, $values)->error()){  // running our query statement by going to function query
            return true;
        }
        return  false;
@@ -64,6 +64,59 @@ class DB
 //       dnd($sql);
 
    }
+
+   public function update($table, $id, $fields = []){
+       $fieldString = '';
+       $values = [];
+       foreach ($fields as $field => $value){
+           $fieldString .= '' .$field . '= ?,'; // fname = 'Danny'
+           $values[] = $value;
+       }
+       $fieldString = trim($fieldString);  // takes away the space at begin and end
+       $fieldString = rtrim($fieldString, ',');  // remove last coma
+       $sql = "UPDATE {$table} SET {$fieldString} WHERE id = {$id}";
+       if(!$this->query($sql, $values)->error()){
+           return true;
+       }
+       return false;
+
+   }
+
+   public function delete($table, $id){
+       $sql = "DELETE FROM {$table} WHERE id = {$id}";
+       if(!$this->query($sql)->error()){
+           return true;
+       }
+       return false;
+   }
+
+   //since all results are stored in a private _result object.we need to get it
+    //its set any time we use query
+    public function results(){
+       return $this->_result;
+    }
+
+    //return just the first row obj
+    public function first(){
+       return (!empty($this->_result[0])) ? $this->_result[0] : [];  //if result[0] is not empty the return it else return empty
+    }
+
+    //get count
+    public function count(){
+        return $this->_count;
+    }
+
+
+    //get count
+    public function lastInsertID(){
+        return $this->_lastInsertID;
+    }
+
+    // get column
+    public function get_columns($table){
+        return $this->query("SHOW COLUMNS FROM {$table}")->results();
+    }
+
    public function error(){
        return $this->_error;
    }
