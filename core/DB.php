@@ -42,7 +42,67 @@ class DB
        }
    }
 
-   public function insert($table, $fields = []){
+    protected function readRecord($table, $params = []){
+        $conditionString = '';
+        $bind = [];
+        $order = '';
+        $limit = '';
+
+        //conditions => the where condition in sql
+        if(isset($params['conditions'])){   // check if set
+            if(is_array($params['conditions'])){  // check if its an array
+                foreach ($params['conditions'] as $condition){
+                    $conditionString .= ' ' .$condition . ' AND';   // FOR AND CONDITION we will have to bind it to something thats why .=
+                }
+                $conditionString = trim($conditionString);  // trim spaces
+                $conditionString = rtrim($conditionString, ' AND'); //trim last and
+            }else{
+                $conditionString = $params['conditions'];  // if not array
+            }
+            if($conditionString != ''){    // check if there is condition. if yes then continue
+                $conditionString = ' WHERE ' . $conditionString ;
+            }
+
+        }
+        ////bind => the value  to use to equate the field example where fname = 'danny' => danny is what is binded
+        if(array_key_exists('bind', $params)){  // check if there is the key bind in params =>in array where u will use sql. check if bind iis it
+            $bind = $params['bind'];
+        }
+        //order  => order by
+        if(array_key_exists('order', $params)){  // thesame looking for order key
+            $order = ' ORDER BY ' . $params['order'];
+        }
+        //limit => limit how many needed
+        if(array_key_exists('limit', $params)){
+            $limit = ' LIMIT ' . $params['limit'];
+        }
+
+        //SQL STATEMENT
+        $sql = "SELECT * FROM {$table}{$conditionString}{$order}{$limit}";
+        if($this->query($sql,  $bind)){
+            if(!count($this->_result)) return false;  // count if there is a record
+            return true;
+        }
+        return false;  // query didnot run return false
+    }
+
+    //find function
+    public function find($table, $paramas = []){
+        if($this->readRecord($table, $paramas)){
+            return $this->results();
+        }
+        return false;
+    }
+    //findfirst function
+    public function findfirst($table, $paramas = []){
+        if($this->readRecord($table, $paramas)){
+            return $this->first();  // our function first. getting first record
+        }
+        return false;
+    }
+
+
+    public function insert($table, $fields = []){
        $fieldString = '';
        $valueString = '';
        $values = [];
@@ -120,4 +180,8 @@ class DB
    public function error(){
        return $this->_error;
    }
+
+    //after finding we have to read it
+
+
 }
